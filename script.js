@@ -5,14 +5,16 @@ function createHeader () {
     addButton.id = "addButton";
     addButton.innerText = "+";
     addButton.addEventListener("click", () => {
-        createInputNote();
+        let newNote = document.getElementById('newNote');
+        if (newNote) document.body.removeChild(newNote);
+        createInput();
     });
 
     let editButton = document.createElement("button");
     editButton.id = "editButton";
     editButton.innerText = "#";
     editButton.addEventListener("click", () => {
-        editNote();
+        enableEditing();
     });
 
     header.classList.add('header');
@@ -37,16 +39,16 @@ function createContainer(){
     document.body.appendChild(container);
 }
 
-function createInputNote() {
-    let inputNote = document.createElement('div');
-    inputNote.classList.add('inputNote');
-    inputNote.id = 'inputNote';
+function createInput() {
+    let newNote = document.createElement('div');
+    newNote.classList.add('newNote');
+    newNote.id = 'newNote';
 
     let closeButton = document.createElement('button');
     closeButton.classList.add('closeButton');
     closeButton.innerText = 'X';
     closeButton.addEventListener('click', () => {
-        document.body.removeChild(inputNote);
+        document.body.removeChild(newNote);
     });
 
     let form = document.createElement('form');
@@ -59,12 +61,11 @@ function createInputNote() {
     addNoteButton.type = 'submit';
     addNoteButton.innerText = 'Add Note';
     addNoteButton.addEventListener('click', () => {
-        addNote();
+        addNote()
     });
 
     let title = document.createElement('input');
     title.id = 'title';
-    title.classList.add('title');
     title.placeholder = 'Title';
     title.type = 'text';
     title.name = 'title';
@@ -72,13 +73,11 @@ function createInputNote() {
 
     let description = document.createElement('textarea');
     description.id = 'description';
-    description.classList.add('description');
     description.placeholder = 'Task description';
     description.name = 'description';
 
     let date = document.createElement('input');
     date.id = 'date';
-    date.classList.add('date');
     date.type = 'date';
     date.name = 'date';
     date.required = true;
@@ -88,30 +87,84 @@ function createInputNote() {
     form.appendChild(description);
     form.appendChild(addNoteButton);
     
-    inputNote.appendChild(form);
-    inputNote.appendChild(closeButton);
+    newNote.appendChild(form);
+    newNote.appendChild(closeButton);
     
-    document.body.appendChild(inputNote);
+    document.body.appendChild(newNote);
+}
+
+function createNote(titleText, dateText, descriptionText){
+    let container = document.getElementById('container');
+    let note = document.createElement('div');
+    note.id = `note${container.childElementCount}`;
+    note.classList.add('note');
+    
+    let title = document.createElement('h2');
+    title.innerText = titleText;
+    title.classList.add('title');
+
+    let date = document.createElement('p');
+    date.innerText = dateText;
+    date.classList.add('date');
+
+    let description = document.createElement('p');  
+    description.innerText = descriptionText;
+    description.classList.add('description');
+
+    note.appendChild(title);
+    note.appendChild(date);
+    note.appendChild(description);
+
+    container.appendChild(note);
 }
 
 function addNote(){
-    let container = document.getElementById('container');
-    let note = document.createElement('div');
-    note.classList.add('note');
-    note.id = `note${container.childElementCount}`;
-    container.appendChild(note);
+    const titleText = document.getElementById('title').value;
+    const dateText = document.getElementById('date').value;
+    const descriptionText = document.getElementById('description').value;
+
+    createNote(titleText, dateText, descriptionText);
+    storeNote(titleText, dateText, descriptionText);
+
+    document.body.removeChild(document.getElementById('newNote'));
 }
 
 function deleteNote(noteId){
     let container = document.getElementById('container');
     let note = document.getElementById(noteId);
     container.removeChild(note);
+
+    deleteStoredNote(noteId);
 }
 
-function editNote(noteId, sectionId){
+function enableEditing(){
+    let container = document.getElementById('container');
+    let notes = container.children;
+    for (let i = 0; i < notes.length; i++){
+        let note = notes[i];
+        let deleteButton = document.createElement('button');
+        deleteButton.classList.add('deleteButton');
+        deleteButton.innerText = 'X';
+        deleteButton.addEventListener('click', () => {
+            deleteNote();
+        });
+        note.appendChild(deleteButton);
+    }
+}
+
+function storeNote(title, date, description){
+
+}
+
+function deleteStoredNote(noteId){
+
+}
+
+function loadStoredNotes() {
 
 }
 
 createHeader();
 createContainer();
 createFooter();
+loadStoredNotes();

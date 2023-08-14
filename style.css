@@ -13,16 +13,6 @@ body {
     height: 100vh;
 }
 
-.container {
-    padding: 0;
-    margin: 0;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
 .footer, .header {
     font-family: Helvetica ,fantasy;
     flex-grow: 0;    
@@ -82,7 +72,8 @@ body {
     text-decoration: none;
 }
 
-.inputNote {
+.newNote {
+
     position: absolute;
     right: 50vw;
     bottom: 50vh;
@@ -156,3 +147,52 @@ body {
     border: #000 2px solid;
 }
 
+.container {
+    padding: 20px;
+    margin: 0;
+    width: 100vw;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.note {
+    padding: 10px;
+    border-radius: 10px;
+    border: solid 2px lightgrey;
+    width: 200px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.date {
+    font-size: small;
+    font-weight: bold;
+    color: grey;
+    width: 150px;
+}
+
+.description {
+    font-size: medium;
+    width: 150px;
+    max-height: 150px;
+    height: 200px;
+    overflow-wrap: break-word;
+    overflow-y: auto;
+}
+
+.title {
+    font-size: large;
+    font-weight: bold;
+    height: 50px;
+    width: 150px;
+    text-align: center;
+    overflow-wrap: break-word;
+    overflow-y: auto;
+}
