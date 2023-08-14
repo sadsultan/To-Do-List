@@ -1,29 +1,60 @@
-import './style.css';
-
-const container = document.getElementById('container');
-
 function createHeader () {
-    let header = document.createElement('div');
+    let header = document.createElement("div");
+
+    let addButton = document.createElement("button");
+    addButton.id = "addButton";
+    addButton.innerText = "+";
+    addButton.addEventListener("click", () => {
+        addNote();
+    });
+
+    let editButton = document.createElement("button");
+    editButton.id = "editButton";
+    editButton.innerText = "#";
+    editButton.addEventListener("click", () => {
+        editNote();
+    });
+
     header.classList.add('header');
-    header.innerText = 'Notes';
-    container.appendChild(header); 
+    header.innerText = 'Tasks';
+
+    header.appendChild(editButton);
+    header.appendChild(addButton);
+    document.body.appendChild(header);
 };
 
-function createNote () {
-    let noteDisplay = document.createElement('div');
-    noteDisplay.innerHTML = noteHTML();
-    noteDisplay.classList.add('note');
-    container.appendChild(noteDisplay);
+function createFooter(){
+    let footer = document.createElement('div');
+    footer.classList.add('footer');
+    footer.innerHTML = `<p>Created by <a href="https://github.com/sadsultan">Saad Sultan</a></p>`;
+    document.body.appendChild(footer);
 }
 
-function noteHTML () {
-    let title = document.getElementById('title');
-    let note = document.getElementById('note');
-    let html =  `<h1>${title.value}</h1>`+
-                `<p>${note.value}</p>`+
-                `<button onclick="deleteNote()">Delete</button>`+
-                `<button onclick="editText()">Edit</button>`+
-                ``;
+function createContainer(){
+    let container = document.createElement('div');
+    container.classList.add('container');
+    container.id = 'container';
+    document.body.appendChild(container);
+}
+
+function createSidebar() {
+    let sidebar = document.createElement('div');
+    sidebar.classList.add('sidebar');
+    sidebar.id = 'sidebar';
+    document.body.appendChild(sidebar);
+}
+
+function addNote(){
+}
+
+function deleteNote(noteId){
+    
+}
+
+function editNote(noteId, sectionId){
+
 }
 
 createHeader();
+createContainer();
+createFooter();
