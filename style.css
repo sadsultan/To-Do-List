@@ -82,24 +82,25 @@ body {
     text-decoration: none;
 }
 
-.sidebar {
+.inputNote {
     position: absolute;
-    top: 0;
-    left: -250px;
+    right: 50vw;
+    bottom: 50vh;
+    
+    transform: translate(50%, 50%);
+
     width: 250px;
-    top: 0;
-    padding: 0;
-    height: 100vh;
+    padding: 20px;
+
+    border: lightgray 2px solid;
+    border-radius: 5px;
+
     background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 10px;
-}
-
-.sidebar-active {
-    left: 0;
 }
 
 .addNoteButton, .closeButton {
@@ -122,8 +123,8 @@ body {
 .closeButton {
     padding: 5px 10px;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 0;
+    left: 105%;
 }
 
 .addNoteButton {

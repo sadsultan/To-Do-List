@@ -5,8 +5,7 @@ function createHeader () {
     addButton.id = "addButton";
     addButton.innerText = "+";
     addButton.addEventListener("click", () => {
-        let sidebar = document.getElementById('sidebar')
-        sidebar.classList.toggle('sidebar-active');
+        createInputNote();
     });
 
     let editButton = document.createElement("button");
@@ -38,16 +37,16 @@ function createContainer(){
     document.body.appendChild(container);
 }
 
-function createSidebar() {
-    let sidebar = document.createElement('div');
-    sidebar.classList.add('sidebar');
-    sidebar.id = 'sidebar';
+function createInputNote() {
+    let inputNote = document.createElement('div');
+    inputNote.classList.add('inputNote');
+    inputNote.id = 'inputNote';
 
     let closeButton = document.createElement('button');
     closeButton.classList.add('closeButton');
     closeButton.innerText = 'X';
     closeButton.addEventListener('click', () => {
-        sidebar.classList.toggle('sidebar-active');
+        document.body.removeChild(inputNote);
     });
 
     let form = document.createElement('form');
@@ -89,10 +88,10 @@ function createSidebar() {
     form.appendChild(description);
     form.appendChild(addNoteButton);
     
-    sidebar.appendChild(form);
-    sidebar.appendChild(closeButton);
+    inputNote.appendChild(form);
+    inputNote.appendChild(closeButton);
     
-    document.body.appendChild(sidebar);
+    document.body.appendChild(inputNote);
 }
 
 function addNote(){
@@ -116,4 +115,3 @@ function editNote(noteId, sectionId){
 createHeader();
 createContainer();
 createFooter();
-createSidebar();
