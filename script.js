@@ -138,18 +138,7 @@ function deleteNote(noteId){
 }
 
 function enableEditing(){
-    let container = document.getElementById('container');
-    let notes = container.children;
-    for (let i = 0; i < notes.length; i++){
-        let note = notes[i];
-        let deleteButton = document.createElement('button');
-        deleteButton.classList.add('deleteButton');
-        deleteButton.innerText = 'X';
-        deleteButton.addEventListener('click', () => {
-            deleteNote();
-        });
-        note.appendChild(deleteButton);
-    }
+    
 }
 
 function storeNote(title, date, description){
