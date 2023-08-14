@@ -73,7 +73,6 @@ body {
 }
 
 .newNote {
-
     position: absolute;
     right: 50vw;
     bottom: 50vh;
@@ -130,7 +129,7 @@ body {
     gap: 10px;
 }
 
-.form > *:not(button) {
+textarea, input {
     border-radius: 5px;
     border: lightgrey 2px solid;
     width: 200px;
@@ -138,12 +137,12 @@ body {
     padding: 5px;
 }
 
-.form > textarea {
+textarea {
     height: 100px;
     resize: none;
 }
 
-.form > *:focus {
+textarea:focus,input:focus{
     border: #000 2px solid;
 }
 

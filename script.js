@@ -138,19 +138,19 @@ function deleteNote(noteId){
 }
 
 function enableEditing(){
-    
+    return;
 }
 
 function storeNote(title, date, description){
-
+    return;
 }
 
 function deleteStoredNote(noteId){
-
+    return;
 }
 
 function loadStoredNotes() {
-
+    return;
 }
 
 createHeader();
