@@ -5,7 +5,8 @@ function createHeader () {
     addButton.id = "addButton";
     addButton.innerText = "+";
     addButton.addEventListener("click", () => {
-        addNote();
+        let sidebar = document.getElementById('sidebar')
+        sidebar.classList.toggle('sidebar-active');
     });
 
     let editButton = document.createElement("button");
@@ -41,14 +42,71 @@ function createSidebar() {
     let sidebar = document.createElement('div');
     sidebar.classList.add('sidebar');
     sidebar.id = 'sidebar';
+
+    let closeButton = document.createElement('button');
+    closeButton.classList.add('closeButton');
+    closeButton.innerText = 'X';
+    closeButton.addEventListener('click', () => {
+        sidebar.classList.toggle('sidebar-active');
+    });
+
+    let form = document.createElement('form');
+    form.classList.add('form');
+    form.id = 'form';
+
+
+    let addNoteButton = document.createElement('button');
+    addNoteButton.classList.add('addNoteButton');
+    addNoteButton.type = 'submit';
+    addNoteButton.innerText = 'Add Note';
+    addNoteButton.addEventListener('click', () => {
+        addNote();
+    });
+
+    let title = document.createElement('input');
+    title.id = 'title';
+    title.classList.add('title');
+    title.placeholder = 'Title';
+    title.type = 'text';
+    title.name = 'title';
+    title.required = true;
+
+    let description = document.createElement('textarea');
+    description.id = 'description';
+    description.classList.add('description');
+    description.placeholder = 'Task description';
+    description.name = 'description';
+
+    let date = document.createElement('input');
+    date.id = 'date';
+    date.classList.add('date');
+    date.type = 'date';
+    date.name = 'date';
+    date.required = true;
+    
+    form.appendChild(title);
+    form.appendChild(date);
+    form.appendChild(description);
+    form.appendChild(addNoteButton);
+    
+    sidebar.appendChild(form);
+    sidebar.appendChild(closeButton);
+    
     document.body.appendChild(sidebar);
 }
 
 function addNote(){
+    let container = document.getElementById('container');
+    let note = document.createElement('div');
+    note.classList.add('note');
+    note.id = `note${container.childElementCount}`;
+    container.appendChild(note);
 }
 
 function deleteNote(noteId){
-    
+    let container = document.getElementById('container');
+    let note = document.getElementById(noteId);
+    container.removeChild(note);
 }
 
 function editNote(noteId, sectionId){
@@ -58,3 +116,4 @@ function editNote(noteId, sectionId){
 createHeader();
 createContainer();
 createFooter();
+createSidebar();
