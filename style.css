@@ -5,6 +5,7 @@
 }
 
 body {
+    background-color: antiquewhite;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -50,7 +51,7 @@ body {
     background-color: #333;
 }
 
-#editButton {
+#sortButton {
     padding: 5px 12px;
     right: 0;
 }
@@ -129,7 +130,108 @@ body {
     gap: 10px;
 }
 
-textarea, input {
+.container {
+    padding: 20px;
+    margin: 0;
+    width: 100vw;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: antiquewhite;
+}
+
+.note {
+    padding: 20px;
+
+    border-radius: 10px;
+    border: solid 2px lightgrey;
+
+    width: 250px;
+    background-color: whitesmoke;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.buttonHolder {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+}
+
+.buttonHolder > button {
+    width: 60px;
+    margin: 0;
+    border: none;
+    background-color: #000;
+    color: white;
+    font-size: small;
+    font-weight: bolder;
+    font-family: Helvetica;
+}
+
+.buttonHolder > button:hover {
+    border: black 2px solid;
+    background-color: whitesmoke;
+    color: black;
+}
+
+.editNote {
+    border-radius: 15px 0 0 15px;
+    padding: 5px;
+    padding-right: 10px;
+    text-align: right; 
+}
+
+.deleteNote {
+    border-radius: 0 15px 15px 0;
+    padding: 5px;
+    padding-left: 10px;
+    text-align: left;
+}
+
+.title, .date,.description {
+    width: 200px;
+    height: 30px;
+    padding: 5px;
+    font-family: Helvetica;
+}
+
+.date {
+    font-size: small;
+    font-weight: bold;
+    color: darkgrey;
+}
+
+.description {
+    font-size: small;
+    font-weight: bolder;
+    max-height: 100px;
+    height: 200px;
+    color: rgba(67, 66, 66, 0.685);
+    overflow-wrap: break-word;
+    overflow-y: auto;
+}
+
+.title {
+    font-size: medium;
+    font-weight: bold;
+    color: rgba(67, 66, 66, 0.91);
+    /* text-align: center; */
+    overflow-wrap: break-word;
+    overflow-y: auto;
+}
+
+textarea,
+input {
     border-radius: 5px;
     border: lightgrey 2px solid;
     width: 200px;
@@ -142,56 +244,7 @@ textarea {
     resize: none;
 }
 
-textarea:focus,input:focus{
+textarea:focus,
+input:focus {
     border: #000 2px solid;
-}
-
-.container {
-    padding: 20px;
-    margin: 0;
-    width: 100vw;
-    display: flex;
-    align-items: start;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.note {
-    padding: 10px;
-    border-radius: 10px;
-    border: solid 2px lightgrey;
-    width: 200px;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.date {
-    font-size: small;
-    font-weight: bold;
-    color: grey;
-    width: 150px;
-}
-
-.description {
-    font-size: medium;
-    width: 150px;
-    max-height: 150px;
-    height: 200px;
-    overflow-wrap: break-word;
-    overflow-y: auto;
-}
-
-.title {
-    font-size: large;
-    font-weight: bold;
-    height: 50px;
-    width: 150px;
-    text-align: center;
-    overflow-wrap: break-word;
-    overflow-y: auto;
 }

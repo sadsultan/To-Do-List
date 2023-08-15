@@ -1,3 +1,6 @@
+if (!localStorage.getItem('notes')) 
+    localStorage.setItem('notes', JSON.stringify({}));
+
 function createHeader () {
     let header = document.createElement("div");
 
@@ -11,10 +14,10 @@ function createHeader () {
     });
 
     let editButton = document.createElement("button");
-    editButton.id = "editButton";
+    editButton.id = "sortButton";
     editButton.innerText = "#";
     editButton.addEventListener("click", () => {
-        enableEditing();
+        sortBar();
     });
 
     header.classList.add('header');
@@ -23,6 +26,7 @@ function createHeader () {
     header.appendChild(editButton);
     header.appendChild(addButton);
     document.body.appendChild(header);
+    return;
 };
 
 function createFooter(){
@@ -30,6 +34,7 @@ function createFooter(){
     footer.classList.add('footer');
     footer.innerHTML = `<p>Created by <a href="https://github.com/sadsultan">Saad Sultan</a></p>`;
     document.body.appendChild(footer);
+    return;
 }
 
 function createContainer(){
@@ -37,6 +42,41 @@ function createContainer(){
     container.classList.add('container');
     container.id = 'container';
     document.body.appendChild(container);
+    return;
+}
+
+function sortBar(){
+    let sortBar = document.createElement('div');
+    sortBar.classList.add('sortBar');
+    sortBar.id = 'sortBar';
+
+    let sortTitle = document.createElement('button');
+    sortTitle.classList.add('sortTitle');
+    sortTitle.innerText = 'Title';
+    sortTitle.addEventListener('click', () => {
+        sortTitle();
+    });
+
+    let sortDate = document.createElement('button');
+    sortDate.classList.add('sortDate');
+    sortDate.innerText = 'Date';
+    sortDate.addEventListener('click', () => {
+        sortDate();
+    });
+
+    let sortDescription = document.createElement('button');
+    sortDescription.classList.add('sortDescription');
+    sortDescription.innerText = 'Description';
+    sortDescription.addEventListener('click', () => {
+        sortDescription();
+    });
+
+    sortBar.appendChild(sortTitle);
+    sortBar.appendChild(sortDate);
+    sortBar.appendChild(sortDescription);
+
+    document.body.appendChild(sortBar);
+    return;
 }
 
 function createInput() {
@@ -91,6 +131,7 @@ function createInput() {
     newNote.appendChild(closeButton);
     
     document.body.appendChild(newNote);
+    return;
 }
 
 function createNote(titleText, dateText, descriptionText){
@@ -111,11 +152,48 @@ function createNote(titleText, dateText, descriptionText){
     description.innerText = descriptionText;
     description.classList.add('description');
 
+    let buttonHolder = document.createElement('div');
+    buttonHolder.classList.add('buttonHolder');
+
+    let deleteButton = document.createElement('button');
+    deleteButton.classList.add('deleteNote');
+    deleteButton.innerText = 'delete';
+    deleteButton.addEventListener('click', () => {
+        deleteNote(note.id);
+    });
+
+    let editButton = document.createElement('button');
+    editButton.classList.add('editNote');
+    editButton.innerText = 'edit';
+    editButton.addEventListener('click', () => {
+        editNote();
+    });
+
+
+    buttonHolder.appendChild(editButton);
+    buttonHolder.appendChild(deleteButton);
+
     note.appendChild(title);
     note.appendChild(date);
     note.appendChild(description);
+    note.appendChild(buttonHolder);
 
     container.appendChild(note);
+    return;
+}
+
+function loadStoredNotes() {
+    let notes = localStorage.getItem('notes');
+    notes = JSON.parse(notes);
+
+    for (let note in notes){
+        createNote(
+            notes[note].title,
+            notes[note].date,
+            notes[note].description
+        );
+    }
+    return;
 }
 
 function addNote(){
@@ -127,6 +205,19 @@ function addNote(){
     storeNote(titleText, dateText, descriptionText);
 
     document.body.removeChild(document.getElementById('newNote'));
+    return;
+}
+
+function storeNote(title, date, description){
+    let notes = localStorage.getItem('notes');
+    notes = JSON.parse(notes);
+    notes[`note${Object.keys(notes).length}`] = {
+        title: title,
+        date: date,
+        description: description
+    }
+    localStorage.setItem('notes', JSON.stringify(notes));
+    return;
 }
 
 function deleteNote(noteId){
@@ -135,21 +226,20 @@ function deleteNote(noteId){
     container.removeChild(note);
 
     deleteStoredNote(noteId);
-}
-
-function enableEditing(){
-    return;
-}
-
-function storeNote(title, date, description){
     return;
 }
 
 function deleteStoredNote(noteId){
+    let notes = localStorage.getItem('notes');
+    notes = JSON.parse(notes);
+
+    if (noteId in notes) delete notes[noteId];
+
+    localStorage.setItem('notes', JSON.stringify(notes));
     return;
 }
 
-function loadStoredNotes() {
+function editNote(){
     return;
 }
 
