@@ -355,3 +355,8 @@ input[type="range"] {
     font-family: Helvetica;
     color: #000;
 }
+
+.sideBarLabel {
+    width: 200px;
+    text-align: left;
+}

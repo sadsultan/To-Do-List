@@ -26,9 +26,12 @@ function createHeader () {
     return;
 };
 
-let SORT = '';
-let FILTER = '';
+
 function createsideBar() {
+    let SORT = '';
+    let FILTER = '';
+    let notes;
+
     let sideBar = document.createElement('div');
     sideBar.classList.add('sideBar');
     sideBar.id = 'sideBar';
@@ -52,16 +55,16 @@ function createsideBar() {
     sortDateButton.classList.add('sideBarButton');
     sortDateButton.innerText = 'Date';
     sortDateButton.addEventListener('click', () => {
-        SORT = 'date';
-        sortNotes(SORT);
+        loadStoredNotes();
+        sortNotes('date');
     });
 
     let sortImportanceButton = document.createElement('button');
     sortImportanceButton.classList.add('sideBarButton');
     sortImportanceButton.innerText = 'Importance';
     sortImportanceButton.addEventListener('click', () => {
-        SORT = 'importance';
-        sortNotes(SORT);
+        loadStoredNotes();
+        sortNotes('importance');
     });
 
     sortMenu.appendChild(sortTitle);
@@ -75,25 +78,44 @@ function createsideBar() {
     filterTitle.innerText = 'Filter by:';
     filterTitle.classList.add('sideBarTitle');
 
-    let filterDateButton = document.createElement('button');
-    filterDateButton.classList.add('sideBarButton');
-    filterDateButton.innerText = 'Date';
-    filterDateButton.addEventListener('click', () => {
-        FILTER = 'date';
-        filterNotes(FILTER);
-    });
+    let filterDateLabel = document.createElement('label');
+    filterDateLabel.classList.add('sideBarLabel');
+    filterDateLabel.innerText = 'Date:';
+    filterDateLabel.for = 'date';
 
-    let filterImportanceButton = document.createElement('button');
-    filterImportanceButton.classList.add('sideBarButton');
-    filterImportanceButton.innerText = 'Importance';
-    filterImportanceButton.addEventListener('click', () => {
-        FILTER = 'importance';
-        filterNotes(FILTER);
+    let filterDateInput = document.createElement('input');
+    filterDateInput.id = 'filterDate';
+    filterDateInput.classList.add('sideBarInput');
+    filterDateInput.type = 'date';
+    filterDateInput.placeholder = 'Date';
+
+    let filterImportanceLabel = document.createElement('label');
+    filterImportanceLabel.classList.add('sideBarLabel');
+    filterImportanceLabel.innerText = 'Urgency:';
+    filterImportanceLabel.for = 'importance';
+
+    let filterImportanceInput = document.createElement('input');
+    filterImportanceInput.id = 'filterImportance';
+    filterImportanceInput.classList.add('sideBarInput');
+    filterImportanceInput.type = 'range';
+    filterImportanceInput.min = 1;
+    filterImportanceInput.max = 5;
+    filterImportanceInput.name = 'importance';
+
+    let filterButton = document.createElement('button');
+    filterButton.classList.add('sideBarButton');
+    filterButton.innerText = 'Filter';
+    filterButton.addEventListener('click', () => {
+        loadStoredNotes();
+        filterNotes();
     });
 
     filterMenu.appendChild(filterTitle);
-    filterMenu.appendChild(filterDateButton);
-    filterMenu.appendChild(filterImportanceButton);
+    filterMenu.appendChild(filterDateLabel);
+    filterMenu.appendChild(filterDateInput);
+    filterMenu.appendChild(filterImportanceLabel);
+    filterMenu.appendChild(filterImportanceInput);
+    filterMenu.appendChild(filterButton);
 
     sideBar.appendChild(sortMenu);
     sideBar.appendChild(filterMenu);
@@ -105,9 +127,8 @@ function createsideBar() {
     applyBothButton.classList.add('sideBarButton');
     applyBothButton.innerText = 'Apply Both';
     applyBothButton.addEventListener('click', () => {
+        loadStoredNotes();
         applyBoth(SORT, FILTER);
-        SORT = '';
-        FILTER = '';
     });
 
     let reverseButton = document.createElement('button');
@@ -121,8 +142,6 @@ function createsideBar() {
     clearButton.classList.add('sideBarButton');
     clearButton.innerText = 'Clear';
     clearButton.addEventListener('click', () => {
-        SORT = '';
-        FILTER = '';
         let container = document.getElementById('container');
         container.innerHTML = '';
         loadStoredNotes();
@@ -138,15 +157,46 @@ function createsideBar() {
     return;
 }
 
-function sortNotes(changedNotes=false, sortBy) {
+function sortNotes(sortBy) {
+    let container = document.getElementById('container');
+    let notesArray = Array.from(container.childNodes);
+    let sortedNotesArray;
+
+    if (sortBy === 'date') {
+        sortedNotesArray = notesArray.sort((a, b) => {
+            let aDate = a.childNodes[1].childNodes[0].innerText;
+            let bDate = b.childNodes[1].childNodes[0].innerText;
+            return new Date(aDate) - new Date(bDate);
+        });
+    } else if (sortBy === 'importance') {
+        const regex = /\d+$/;
+
+        sortedNotesArray = notesArray.sort((a, b) => {
+        let aImportance = a.childNodes[1].childNodes[1].innerText;
+        let bImportance = b.childNodes[1].childNodes[1].innerText;
+        return parseInt(aImportance.match(regex), 10) - parseInt(bImportance.match(regex), 10);
+        });
+        
+        sortedNotesArray = sortedNotesArray.reverse();
+    } else return;
+
+    container.innerHTML = '';
+    sortedNotesArray.forEach(note => {
+        container.appendChild(note);
+    });
+
     return;
 }
 
 function filterNotes(changedNotes=false, filterBy) {
+    
     return;
 }
 
 function applyBoth(sortBy, filterBy) {
+    if (sortBy !== '') {
+
+    }
     return;
 }
 
@@ -318,6 +368,9 @@ function createNote(titleText, dateText, descriptionText, importanceText = 1){
 }
 
 function loadStoredNotes() {
+    let container = document.getElementById('container');
+    container.innerHTML = '';
+
     let notes = localStorage.getItem('notes');
     notes = JSON.parse(notes);
 
