@@ -99,7 +99,7 @@ function createInput() {
     let addNoteButton = document.createElement('button');
     addNoteButton.classList.add('addNoteButton');
     addNoteButton.type = 'submit';
-    addNoteButton.innerText = 'Add Note';
+    addNoteButton.innerText = 'Add Task';
     addNoteButton.addEventListener('click', () => {
         addNote()
     });
@@ -137,7 +137,7 @@ function createInput() {
 function createNote(titleText, dateText, descriptionText){
     let container = document.getElementById('container');
     let note = document.createElement('div');
-    note.id = `note${container.childElementCount}`;
+    note.id = titleText;
     note.classList.add('note');
     
     let title = document.createElement('h2');
@@ -159,7 +159,7 @@ function createNote(titleText, dateText, descriptionText){
     deleteButton.classList.add('deleteNote');
     deleteButton.innerText = 'delete';
     deleteButton.addEventListener('click', () => {
-        deleteNote(note.id);
+        deleteNote(titleText);
     });
 
     let editButton = document.createElement('button');
@@ -200,18 +200,21 @@ function addNote(){
     const titleText = document.getElementById('title').value;
     const dateText = document.getElementById('date').value;
     const descriptionText = document.getElementById('description').value;
-
-    createNote(titleText, dateText, descriptionText);
-    storeNote(titleText, dateText, descriptionText);
-
-    document.body.removeChild(document.getElementById('newNote'));
-    return;
+    if (!titleText || !dateText) {
+        alert('Please fill all the fields');
+        return;
+    } else {
+        createNote(titleText, dateText, descriptionText);
+        storeNote(titleText, dateText, descriptionText);
+        document.body.removeChild(document.getElementById('newNote'));
+        return;
+    }
 }
 
 function storeNote(title, date, description){
     let notes = localStorage.getItem('notes');
     notes = JSON.parse(notes);
-    notes[`note${Object.keys(notes).length}`] = {
+    notes[title] = {
         title: title,
         date: date,
         description: description
