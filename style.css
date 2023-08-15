@@ -12,6 +12,7 @@ body {
     justify-content: center;
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
 }
 
 .footer, .header {
@@ -158,6 +159,14 @@ body {
     gap: 10px;
 }
 
+.importance {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
 .buttonHolder {
     padding: 0;
     margin: 0;
@@ -198,17 +207,32 @@ body {
     text-align: left;
 }
 
-.title, .date,.description {
+.title, .date, .description, .details{
     width: 200px;
     height: 30px;
     padding: 5px;
     font-family: Helvetica;
 }
 
+.details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .date {
     font-size: small;
     font-weight: bold;
     color: darkgrey;
+    height: auto;
+}
+
+.importance {
+    font-size: small;
+    font-weight: bold;
+    color: darkgrey;
+    text-align: right;
+    height: auto;
 }
 
 .description {
@@ -230,6 +254,17 @@ body {
     overflow-y: auto;
 }
 
+label {
+    font-size: small;
+    font-weight: bold;
+    color: rgb(77, 77, 77);
+    text-align: left;
+    width: 100%;
+    font-family: Helvetica;
+    padding: 0;
+    margin: 0;
+}
+
 textarea,
 input {
     border-radius: 5px;
@@ -247,4 +282,76 @@ textarea {
 textarea:focus,
 input:focus {
     border: #000 2px solid;
+}
+
+input[type="range"] {
+    height: 5px;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 10px;
+    border: none;
+}
+
+.sideBar {
+    background-color: whitesmoke;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 20px;
+}
+
+.sideBar > .closeButton {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.sideBarMenu {
+    padding: 0;
+    margin: 0;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.sideBarButton {
+    width: 200px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #000;
+    color: white;
+    font-size: large;
+    font-weight: bolder;
+    font-family: Helvetica;
+}
+
+.sideBarButton:hover {
+    border: black 2px solid;
+    background-color: whitesmoke;
+    color: black;
+}
+
+.sideBarButton:active {
+    border: black 2px solid;
+    background-color: #333;
+    color: black;
+}
+
+.sideBarTitle {
+    font-size: x-large;
+    font-weight: bolder;
+    width: 200px;
+    text-align: left;
+    font-family: Helvetica;
+    color: #000;
 }

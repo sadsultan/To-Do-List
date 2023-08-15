@@ -14,7 +14,7 @@ function createHeader () {
     editButton.id = "sortButton";
     editButton.innerText = "#";
     editButton.addEventListener("click", () => {
-        sortBar();
+        createsideBar();
     });
 
     header.classList.add('header');
@@ -25,6 +25,142 @@ function createHeader () {
     document.body.appendChild(header);
     return;
 };
+
+let SORT = '';
+let FILTER = '';
+function createsideBar() {
+    let sideBar = document.createElement('div');
+    sideBar.classList.add('sideBar');
+    sideBar.id = 'sideBar';
+
+    let closeButton = document.createElement('button');
+    closeButton.classList.add('closeButton');
+    closeButton.innerText = 'X';
+    closeButton.addEventListener('click', () => {
+        document.body.removeChild(sideBar);
+    });
+    sideBar.appendChild(closeButton);
+
+    let sortMenu = document.createElement('div');
+    sortMenu.classList.add('sideBarMenu');
+
+    let sortTitle = document.createElement('p');
+    sortTitle.innerText = 'Sort by:';
+    sortTitle.classList.add('sideBarTitle');
+
+    let sortDateButton = document.createElement('button');
+    sortDateButton.classList.add('sideBarButton');
+    sortDateButton.innerText = 'Date';
+    sortDateButton.addEventListener('click', () => {
+        SORT = 'date';
+        sortNotes(SORT);
+    });
+
+    let sortImportanceButton = document.createElement('button');
+    sortImportanceButton.classList.add('sideBarButton');
+    sortImportanceButton.innerText = 'Importance';
+    sortImportanceButton.addEventListener('click', () => {
+        SORT = 'importance';
+        sortNotes(SORT);
+    });
+
+    sortMenu.appendChild(sortTitle);
+    sortMenu.appendChild(sortDateButton);
+    sortMenu.appendChild(sortImportanceButton);
+
+    let filterMenu = document.createElement('div');
+    filterMenu.classList.add('sideBarMenu');
+
+    let filterTitle = document.createElement('p');
+    filterTitle.innerText = 'Filter by:';
+    filterTitle.classList.add('sideBarTitle');
+
+    let filterDateButton = document.createElement('button');
+    filterDateButton.classList.add('sideBarButton');
+    filterDateButton.innerText = 'Date';
+    filterDateButton.addEventListener('click', () => {
+        FILTER = 'date';
+        filterNotes(FILTER);
+    });
+
+    let filterImportanceButton = document.createElement('button');
+    filterImportanceButton.classList.add('sideBarButton');
+    filterImportanceButton.innerText = 'Importance';
+    filterImportanceButton.addEventListener('click', () => {
+        FILTER = 'importance';
+        filterNotes(FILTER);
+    });
+
+    filterMenu.appendChild(filterTitle);
+    filterMenu.appendChild(filterDateButton);
+    filterMenu.appendChild(filterImportanceButton);
+
+    sideBar.appendChild(sortMenu);
+    sideBar.appendChild(filterMenu);
+
+    let miscButtons = document.createElement('div');
+    miscButtons.classList.add('sideBarMenu');
+
+    let applyBothButton = document.createElement('button');
+    applyBothButton.classList.add('sideBarButton');
+    applyBothButton.innerText = 'Apply Both';
+    applyBothButton.addEventListener('click', () => {
+        applyBoth(SORT, FILTER);
+        SORT = '';
+        FILTER = '';
+    });
+
+    let reverseButton = document.createElement('button');
+    reverseButton.classList.add('sideBarButton');
+    reverseButton.innerText = 'Reverse';
+    reverseButton.addEventListener('click', () => {
+        reverse();
+    });
+
+    let clearButton = document.createElement('button');
+    clearButton.classList.add('sideBarButton');
+    clearButton.innerText = 'Clear';
+    clearButton.addEventListener('click', () => {
+        SORT = '';
+        FILTER = '';
+        let container = document.getElementById('container');
+        container.innerHTML = '';
+        loadStoredNotes();
+    });
+
+    miscButtons.appendChild(applyBothButton);
+    miscButtons.appendChild(reverseButton);
+    miscButtons.appendChild(clearButton);
+
+    sideBar.appendChild(miscButtons);
+
+    document.body.appendChild(sideBar);
+    return;
+}
+
+function sortNotes(changedNotes=false, sortBy) {
+    return;
+}
+
+function filterNotes(changedNotes=false, filterBy) {
+    return;
+}
+
+function applyBoth(sortBy, filterBy) {
+    return;
+}
+
+function reverse() {
+    let container = document.getElementById('container');
+    let reversedNotesArray = Array.from(container.childNodes).reverse();
+
+    container.innerHTML = '';
+    reversedNotesArray.forEach(note => {
+        container.appendChild(note);
+    });
+
+    return;
+}
 
 function createFooter(){
     let footer = document.createElement('div');
@@ -39,40 +175,6 @@ function createContainer(){
     container.classList.add('container');
     container.id = 'container';
     document.body.appendChild(container);
-    return;
-}
-
-function sortBar(){
-    let sortBar = document.createElement('div');
-    sortBar.classList.add('sortBar');
-    sortBar.id = 'sortBar';
-
-    let sortTitle = document.createElement('button');
-    sortTitle.classList.add('sortTitle');
-    sortTitle.innerText = 'Title';
-    sortTitle.addEventListener('click', () => {
-        sortTitle();
-    });
-
-    let sortDate = document.createElement('button');
-    sortDate.classList.add('sortDate');
-    sortDate.innerText = 'Date';
-    sortDate.addEventListener('click', () => {
-        sortDate();
-    });
-
-    let sortDescription = document.createElement('button');
-    sortDescription.classList.add('sortDescription');
-    sortDescription.innerText = 'Description';
-    sortDescription.addEventListener('click', () => {
-        sortDescription();
-    });
-
-    sortBar.appendChild(sortTitle);
-    sortBar.appendChild(sortDate);
-    sortBar.appendChild(sortDescription);
-
-    document.body.appendChild(sortBar);
     return;
 }
 
@@ -120,18 +222,34 @@ function createInput(isEdit = false) {
     date.name = 'date';
     date.required = true;
 
+    let importanceLabel = document.createElement('label');
+    importanceLabel.innerText = 'Urgency Level:';
+    importanceLabel.for = 'importance';
+
+    let importance = document.createElement('input');
+    importance.id = 'importance';
+    importance.type = 'range';
+    importance.name = 'importance';
+    importance.min = 1;
+    importance.max = 5;
+
     if (isEdit) {
         let titleText = document.getElementById(isEdit).childNodes[0].innerText;
         let dateText = document.getElementById(isEdit).childNodes[1].innerText;
         let descriptionText = document.getElementById(isEdit).childNodes[2].innerText;
+        let importanceText = document.getElementById(isEdit).childNodes[3].innerText;
+
         title.value = titleText;
         date.value = dateText;
         description.innerText = descriptionText;
+        importance.value = importanceText;
     }
     
     form.appendChild(title);
     form.appendChild(date);
     form.appendChild(description);
+    form.appendChild(importanceLabel);
+    form.appendChild(importance);
     form.appendChild(addNoteButton);
     
     newNote.appendChild(form);
@@ -141,7 +259,7 @@ function createInput(isEdit = false) {
     return;
 }
 
-function createNote(titleText, dateText, descriptionText){
+function createNote(titleText, dateText, descriptionText, importanceText = 1){
     let container = document.getElementById('container');
     let note = document.createElement('div');
     note.id = titleText;
@@ -151,9 +269,20 @@ function createNote(titleText, dateText, descriptionText){
     title.innerText = titleText;
     title.classList.add('title');
 
+
+    let details = document.createElement('div');
+    details.classList.add('details');
+
     let date = document.createElement('p');
     date.innerText = dateText;
     date.classList.add('date');
+
+    let importance = document.createElement('p');
+    importance.innerText = "Urgency: " + importanceText;
+    importance.classList.add('importance');
+
+    details.appendChild(date);
+    details.appendChild(importance);
 
     let description = document.createElement('p');  
     description.innerText = descriptionText;
@@ -176,12 +305,11 @@ function createNote(titleText, dateText, descriptionText){
         createInput(titleText);
     });
 
-
     buttonHolder.appendChild(editButton);
     buttonHolder.appendChild(deleteButton);
 
     note.appendChild(title);
-    note.appendChild(date);
+    note.appendChild(details);
     note.appendChild(description);
     note.appendChild(buttonHolder);
 
@@ -197,7 +325,8 @@ function loadStoredNotes() {
         createNote(
             notes[note].title,
             notes[note].date,
-            notes[note].description
+            notes[note].description,
+            notes[note].importance
         );
     }
     return;
@@ -207,24 +336,27 @@ function addNote() {
     const titleText = document.getElementById('title').value;
     const dateText = document.getElementById('date').value;
     const descriptionText = document.getElementById('description').value;
-    if (!titleText || !dateText) {
+    const importanceText = document.getElementById('importance').value;
+
+    if (!titleText || !dateText || !importanceText) {
         alert('Please fill all the fields');
         return;
     } else {
-        createNote(titleText, dateText, descriptionText);
-        storeNote(titleText, dateText, descriptionText);
+        createNote(titleText, dateText, descriptionText, importanceText);
+        storeNote(titleText, dateText, descriptionText, importanceText);
         document.body.removeChild(document.getElementById('newNote'));
         return;
     }
 }
 
-function storeNote(title, date, description){
+function storeNote(title, date, description, importance){
     let notes = localStorage.getItem('notes');
     notes = JSON.parse(notes);
     notes[title] = {
         title: title,
         date: date,
-        description: description
+        description: description,
+        importance: importance
     }
     localStorage.setItem('notes', JSON.stringify(notes));
     return;
@@ -253,16 +385,16 @@ function updateNote(noteId) {
     const titleText = document.getElementById('title').value;
     const dateText = document.getElementById('date').value;
     const descriptionText = document.getElementById('description').value;
-    if (!titleText || !dateText) {
+    const importanceText = document.getElementById('importance').value;
+    if (!titleText || !dateText || !importanceText) {
         alert('Please fill all the fields');
     } else {
         deleteNote(noteId);
-        createNote(titleText, dateText, descriptionText);
+        createNote(titleText, dateText, descriptionText, importanceText);
         document.body.removeChild(document.getElementById('newNote'));
     }
     return;
 }
-
 
 if (!localStorage.getItem('notes')) 
     localStorage.setItem('notes', JSON.stringify({}));
