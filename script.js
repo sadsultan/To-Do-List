@@ -1,6 +1,3 @@
-if (!localStorage.getItem('notes')) 
-    localStorage.setItem('notes', JSON.stringify({}));
-
 function createHeader () {
     let header = document.createElement("div");
 
@@ -79,10 +76,10 @@ function sortBar(){
     return;
 }
 
-function createInput() {
+function createInput(isEdit = false) {
     let newNote = document.createElement('div');
     newNote.classList.add('newNote');
-    newNote.id = 'newNote';
+    newNote.id = 'newNote';    
 
     let closeButton = document.createElement('button');
     closeButton.classList.add('closeButton');
@@ -99,9 +96,10 @@ function createInput() {
     let addNoteButton = document.createElement('button');
     addNoteButton.classList.add('addNoteButton');
     addNoteButton.type = 'submit';
-    addNoteButton.innerText = 'Add Task';
+    addNoteButton.innerText = 'Save Task';
     addNoteButton.addEventListener('click', () => {
-        addNote()
+        if(isEdit) updateNote(isEdit);
+        else addNote();
     });
 
     let title = document.createElement('input');
@@ -121,6 +119,15 @@ function createInput() {
     date.type = 'date';
     date.name = 'date';
     date.required = true;
+
+    if (isEdit) {
+        let titleText = document.getElementById(isEdit).childNodes[0].innerText;
+        let dateText = document.getElementById(isEdit).childNodes[1].innerText;
+        let descriptionText = document.getElementById(isEdit).childNodes[2].innerText;
+        title.value = titleText;
+        date.value = dateText;
+        description.innerText = descriptionText;
+    }
     
     form.appendChild(title);
     form.appendChild(date);
@@ -130,7 +137,7 @@ function createInput() {
     newNote.appendChild(form);
     newNote.appendChild(closeButton);
     
-    document.body.appendChild(newNote);
+    document.body.appendChild(newNote);    
     return;
 }
 
@@ -166,7 +173,7 @@ function createNote(titleText, dateText, descriptionText){
     editButton.classList.add('editNote');
     editButton.innerText = 'edit';
     editButton.addEventListener('click', () => {
-        editNote();
+        createInput(titleText);
     });
 
 
@@ -196,7 +203,7 @@ function loadStoredNotes() {
     return;
 }
 
-function addNote(){
+function addNote() {
     const titleText = document.getElementById('title').value;
     const dateText = document.getElementById('date').value;
     const descriptionText = document.getElementById('description').value;
@@ -242,10 +249,23 @@ function deleteStoredNote(noteId){
     return;
 }
 
-function editNote(){
+function updateNote(noteId) {
+    const titleText = document.getElementById('title').value;
+    const dateText = document.getElementById('date').value;
+    const descriptionText = document.getElementById('description').value;
+    if (!titleText || !dateText) {
+        alert('Please fill all the fields');
+    } else {
+        deleteNote(noteId);
+        createNote(titleText, dateText, descriptionText);
+        document.body.removeChild(document.getElementById('newNote'));
+    }
     return;
 }
 
+
+if (!localStorage.getItem('notes')) 
+    localStorage.setItem('notes', JSON.stringify({}));
 createHeader();
 createContainer();
 createFooter();
