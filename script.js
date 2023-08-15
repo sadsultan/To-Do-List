@@ -28,10 +28,6 @@ function createHeader () {
 
 
 function createsideBar() {
-    let SORT = '';
-    let FILTER = '';
-    let notes;
-
     let sideBar = document.createElement('div');
     sideBar.classList.add('sideBar');
     sideBar.id = 'sideBar';
@@ -55,7 +51,6 @@ function createsideBar() {
     sortDateButton.classList.add('sideBarButton');
     sortDateButton.innerText = 'Date';
     sortDateButton.addEventListener('click', () => {
-        loadStoredNotes();
         sortNotes('date');
     });
 
@@ -63,7 +58,6 @@ function createsideBar() {
     sortImportanceButton.classList.add('sideBarButton');
     sortImportanceButton.innerText = 'Importance';
     sortImportanceButton.addEventListener('click', () => {
-        loadStoredNotes();
         sortNotes('importance');
     });
 
@@ -97,9 +91,7 @@ function createsideBar() {
     let filterImportanceInput = document.createElement('input');
     filterImportanceInput.id = 'filterImportance';
     filterImportanceInput.classList.add('sideBarInput');
-    filterImportanceInput.type = 'range';
-    filterImportanceInput.min = 1;
-    filterImportanceInput.max = 5;
+    filterImportanceInput.type = 'number';
     filterImportanceInput.name = 'importance';
 
     let filterButton = document.createElement('button');
@@ -123,14 +115,6 @@ function createsideBar() {
     let miscButtons = document.createElement('div');
     miscButtons.classList.add('sideBarMenu');
 
-    let applyBothButton = document.createElement('button');
-    applyBothButton.classList.add('sideBarButton');
-    applyBothButton.innerText = 'Apply Both';
-    applyBothButton.addEventListener('click', () => {
-        loadStoredNotes();
-        applyBoth(SORT, FILTER);
-    });
-
     let reverseButton = document.createElement('button');
     reverseButton.classList.add('sideBarButton');
     reverseButton.innerText = 'Reverse';
@@ -147,7 +131,6 @@ function createsideBar() {
         loadStoredNotes();
     });
 
-    miscButtons.appendChild(applyBothButton);
     miscButtons.appendChild(reverseButton);
     miscButtons.appendChild(clearButton);
 
@@ -176,7 +159,7 @@ function sortNotes(sortBy) {
         let bImportance = b.childNodes[1].childNodes[1].innerText;
         return parseInt(aImportance.match(regex), 10) - parseInt(bImportance.match(regex), 10);
         });
-        
+
         sortedNotesArray = sortedNotesArray.reverse();
     } else return;
 
@@ -188,15 +171,37 @@ function sortNotes(sortBy) {
     return;
 }
 
-function filterNotes(changedNotes=false, filterBy) {
-    
-    return;
-}
+function filterNotes() {
+    let container = document.getElementById('container');
+    let notesArray = Array.from(container.childNodes);
+    let importanceValue = document.getElementById('filterImportance').value;
+    let dateValue = document.getElementById('filterDate').value;
+    let filteredNotesArray;
 
-function applyBoth(sortBy, filterBy) {
-    if (sortBy !== '') {
-
+    if (parseInt(importanceValue, 10) > 5 || parseInt(importanceValue, 10) < 1) {
+        alert('Urgency can only be range from 1 to 5');
+        return;
     }
+
+    if (dateValue) {
+        filteredNotesArray = notesArray.filter(note => {
+            let noteDate = note.childNodes[1].childNodes[0].innerText;
+            return noteDate === dateValue;
+        });
+    } 
+    if (importanceValue) {
+        importanceValue  = "Urgency: " + importanceValue;
+        filteredNotesArray = notesArray.filter(note => {
+            let noteImportance = note.childNodes[1].childNodes[1].innerText;
+            return noteImportance === importanceValue;
+        });
+    }
+
+    container.innerHTML = '';
+    filteredNotesArray.forEach(note => {
+        container.appendChild(note);
+    });
+
     return;
 }
 
