@@ -253,7 +253,6 @@ body {
     font-size: medium;
     font-weight: bold;
     color: rgba(67, 66, 66, 0.91);
-    /* text-align: center; */
     overflow-wrap: break-word;
     overflow-y: auto;
 }
