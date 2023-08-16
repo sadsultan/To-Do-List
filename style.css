@@ -132,18 +132,21 @@ body {
 }
 
 .container {
-    margin: 0;
-    padding: 20px;
-    padding-top: 10vh;
-    padding-bottom: 5vh;
-    max-height: 100vh;
-    width: 100vw;
     display: flex;
     align-items: start;
     justify-content: center;
     flex-wrap: wrap;
     overflow-y: auto;
     gap: 20px;
+
+    margin: 0;
+    box-sizing: border-box;
+    padding: 20px;
+    padding-top: 10vh;
+    padding-bottom: 5vh;
+    max-height: 100vh;
+    width: 100vw;
+    
     background-color: antiquewhite;
 }
 
