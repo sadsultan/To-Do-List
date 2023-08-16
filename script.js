@@ -8,6 +8,7 @@ function createHeader () {
         let newNote = document.getElementById('newNote');
         if (newNote) document.body.removeChild(newNote);
         createInput();
+        return;
     });
 
     let editButton = document.createElement("button");
@@ -15,6 +16,7 @@ function createHeader () {
     editButton.innerText = "#";
     editButton.addEventListener("click", () => {
         createsideBar();
+        return;
     });
 
     header.classList.add('header');
@@ -37,6 +39,7 @@ function createsideBar() {
     closeButton.innerText = 'X';
     closeButton.addEventListener('click', () => {
         document.body.removeChild(sideBar);
+        return;
     });
     sideBar.appendChild(closeButton);
 
@@ -52,6 +55,7 @@ function createsideBar() {
     sortDateButton.innerText = 'Date';
     sortDateButton.addEventListener('click', () => {
         sortNotes('date');
+        return;
     });
 
     let sortImportanceButton = document.createElement('button');
@@ -59,6 +63,7 @@ function createsideBar() {
     sortImportanceButton.innerText = 'Importance';
     sortImportanceButton.addEventListener('click', () => {
         sortNotes('importance');
+        return;
     });
 
     sortMenu.appendChild(sortTitle);
@@ -100,6 +105,7 @@ function createsideBar() {
     filterButton.addEventListener('click', () => {
         loadStoredNotes();
         filterNotes();
+        return;
     });
 
     filterMenu.appendChild(filterTitle);
@@ -120,6 +126,7 @@ function createsideBar() {
     reverseButton.innerText = 'Reverse';
     reverseButton.addEventListener('click', () => {
         reverse();
+        return;
     });
 
     let clearButton = document.createElement('button');
@@ -129,6 +136,7 @@ function createsideBar() {
         let container = document.getElementById('container');
         container.innerHTML = '';
         loadStoredNotes();
+        return;
     });
 
     miscButtons.appendChild(reverseButton);
@@ -243,12 +251,12 @@ function createInput(isEdit = false) {
     closeButton.innerText = 'X';
     closeButton.addEventListener('click', () => {
         document.body.removeChild(newNote);
+        return;
     });
 
     let form = document.createElement('form');
     form.classList.add('form');
     form.id = 'form';
-
 
     let addNoteButton = document.createElement('button');
     addNoteButton.classList.add('addNoteButton');
@@ -257,6 +265,7 @@ function createInput(isEdit = false) {
     addNoteButton.addEventListener('click', () => {
         if(isEdit) updateNote(isEdit);
         else addNote();
+        return;
     });
 
     let title = document.createElement('input');
@@ -351,6 +360,7 @@ function createNote(titleText, dateText, descriptionText, importanceText = 1){
     deleteButton.innerText = 'delete';
     deleteButton.addEventListener('click', () => {
         deleteNote(titleText);
+        return;
     });
 
     let editButton = document.createElement('button');
@@ -358,6 +368,7 @@ function createNote(titleText, dateText, descriptionText, importanceText = 1){
     editButton.innerText = 'edit';
     editButton.addEventListener('click', () => {
         createInput(titleText);
+        return;
     });
 
     buttonHolder.appendChild(editButton);
@@ -454,8 +465,7 @@ function updateNote(noteId) {
     return;
 }
 
-if (!localStorage.getItem('notes')) 
-    localStorage.setItem('notes', JSON.stringify({}));
+if (!localStorage.getItem('notes')) localStorage.setItem('notes', JSON.stringify({}));
 createHeader();
 createContainer();
 createFooter();
